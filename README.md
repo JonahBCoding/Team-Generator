@@ -22,6 +22,7 @@ none
 ## Usage:
     
 Run the application from the command line by using node index.js
+![alttext](https://github.com/JonahBCoding/Team-Generator/blob/master/TeamGenVid.gif)
     
 ## License: 
 

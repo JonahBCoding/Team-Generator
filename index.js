@@ -45,13 +45,13 @@ function addManager() {
             message: "What is your team managers office phone number?"
         }
     ])
-        .then(function (data) {
-            const name = data.name
+        .then(function (member) {
+            const name = member.name
             const id = teamMembers.length + 1
-            const email = data.email
-            const officePhone = data.officePhone
-            const teamMember = new Manager(name, id, email, officePhone)
-            teamMembers.push(teamMember)
+            const email = member.email
+            const officePhone = member.officePhone
+            const Employee = new Manager(name, id, email, officePhone)
+            teamMembers.push(Employee)
             addTeamMember();
 
         })
@@ -94,13 +94,13 @@ function addEngineer() {
         }
     ])
 
-        .then(function (data) {
-            const name = data.name
+        .then(function (member) {
+            const name = member.name
             const id = teamMembers.length + 1
-            const email = data.email
-            const github = data.github
-            const teamMember = new Engineer(name, id, email, github)
-            teamMembers.push(teamMember)
+            const email = member.email
+            const github = member.github
+            const Employee = new Engineer(name, id, email, github)
+            teamMembers.push(Employee)
 
             addTeamMember();
         })
@@ -121,13 +121,13 @@ function addIntern() {
             name: "school"
         }
     ])
-        .then(function (data) {
-            const name = data.name
+        .then(function (member) {
+            const name = member.name
             const id = teamMembers.length + 1
-            const email = data.email
-            const school = data.school
-            const teamMember = new Intern(name, id, email, school)
-            teamMembers.push(teamMember)
+            const email = member.email
+            const school = member.school
+            const Employee = new Intern(name, id, email, school)
+            teamMembers.push(Employee)
 
             addTeamMember();
         })
@@ -145,50 +145,122 @@ function startHtml() {
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark mb-5">
-            <span class="navbar-brand mb-0 h1 w-100 text-center">Team Profileeee</span>
-        </nav>
-        <div class="container">
-            <div class="row">`;
-    fs.writeFile("index.html", html, function(err) {
+            <span class="navbar-brand mb-0 h1 w-100 text-center"></span>
+        </nav>`;
+    fs.writeFile("sample.html", html, function (err) {
         if (err) {
             console.log(err);
         }
     });
+
+}
+
+function renderEngineer() {
+    var html = "";
+    
+    var engineersArray = teamMembers.filter(employee => {
+        if (employee.role === 'Engineer') {
+            return true;
+        }
+    }) 
+
+    
+    if (engineersArray) {
+        html = `<div class="container">
+        <div class="card mx-auto w-50">
+            <h3 class="card-header">${engineersArray[0].name}<br /><br />${engineersArray[0].role}</h3>
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${engineersArray[0].id}</li>
+                <li class="list-group-item">Email: ${engineersArray[0].email}</li>
+                <li class="list-group-item">GitHub: ${engineersArray[0].github}</li>
+            </ul>
+        </div>
+    </div>`
+    console.log(engineersArray)
+    } else {
+        console.log("no engineer to display")
+    }
+
+    fs.appendFile("sample.html", html, function (err) {
+        if (err) {
+            console.log(err);
+        };
+    });
+}
+
+function renderIntern() {
+    var html = "";
+    var internsArray = teamMembers.filter(employee => {
+        if (employee.role === 'Intern') {
+            return true;
+        }
+    })
+    if (internsArray) {
+        html = `<div class="container">
+        <div class="card mx-auto w-50">
+            <h3 class="card-header">${internsArray[0].name}<br /><br />${internsArray[0].role}</h3>
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${internsArray[0].id}</li>
+                <li class="list-group-item">Email: ${internsArray[0].email}</li>
+                <li class="list-group-item">School: ${internsArray[0].school}</li>
+            </ul>
+        </div>
+    </div>`
+    } else {
+        console.log("no intern to display")
+    }
+    fs.appendFile("sample.html", html, function (err) {
+        if (err) {
+            console.log(err);
+        };
+    });
+}
+
+function renderManager() {
+    var html = "";
+    var managerArray = teamMembers.filter(employee => {
+        if (employee.role === 'Manager') {
+            return true
+        }
+    })
+    if (managerArray) {
+        html = `<div class="container">
+        <div class="card mx-auto w-50">
+            <h3 class="card-header">${managerArray[0].name}<br /><br />${managerArray[0].role}</h3>
+            <ul class="list-group">
+                <li class="list-group-item">ID: ${managerArray[0].id}</li>
+                <li class="list-group-item">Email: ${managerArray[0].email}</li>
+                <li class="list-group-item">Office Phone: ${managerArray[0].officePhone}</li>
+            </ul>
+        </div>
+    </div>`
+    }
+    fs.appendFile("sample.html", html, function (err) {
+        if (err) {
+            console.log(err);
+        };
+    });
+}
+
+
+function renderTeam () {
+    renderManager();
+    renderEngineer();
+    renderIntern();
     
 }
 
-function renderTeam() {
-    var managerArray = teamMembers.filter(employee => {
-        if (employee.role === 'Manager') {
-            const html = `<div class="container">
-            <div class="card mx-auto w-50">
-                <h3 class="card-header">${managerArray[0].name}<br /><br />${managerArray[0].role}</h3>
-                <ul class="list-group">
-                    <li class="list-group-item">ID: ${managerArray[0].id}</li>
-                    <li class="list-group-item">Email: ${managerArray[0].email}</li>
-                    <li class="list-group-item">Office Phone: ${managerArray[0].officePhone}</li>
-                </ul>
-            </div>
-        </div>`
-        }
-        fs.appendFile("index.html", html, function (err) {
-            if (err) {
-                console.log(err)
-            }
-        })
-    })
-}
-
 function finishHtml() {
+    renderTeam();
     const html = ` </div>
     </div>
     
 </body>
 </html>`;
 
-    renderTeam();
 
-    fs.appendFile("index.html", html, function (err) {
+
+    fs.appendFile("sample.html", html, function (err) {
         if (err) {
             console.log(err);
         };
